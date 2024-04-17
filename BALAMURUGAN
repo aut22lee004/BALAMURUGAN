@@ -1,0 +1,182 @@
+import numpy as np 
+import pandas as pd
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+pip install yfinance
+pip install mplfinance
+import pandas as pd
+import pandas_datareader as web
+import yfinance as yf
+import datetime
+import matplotlib.pyplot as plt
+import numpy as np
+%matplotlib inline
+from pandas.plotting import scatter_matrix
+from mplfinance.original_flavor import candlestick_ohlc
+from matplotlib.dates import DateFormatter, date2num, WeekdayLocator, DayLocator, MONDAY
+start = datetime.datetime(2016,1,1)
+end = datetime.datetime(2023,12,31)
+# get last 5 rows
+price_relnce.tail()
+price_tcs = yf.download('TCS.NS',start,end,auto_adjust=True)
+price_tcs.tail()
+price_tcs['Total Capital Traded'] = price_tcs['Open'] * price_tcs['Volume']
+price_relnce['Total Capital Traded'] = price_relnce['Open'] * price_relnce['Volume']
+price_tcs.head()
+price_relnce.head()
+tickers_list = ['TCS.NS','RELIANCE.NS']
+price_list = yf.download(tickers_list,start,end,auto_adjust=True)
+price_list['Open'].plot(figsize=(15,7))
+plt.ylabel('Opening Prices')
+plt.grid(True)
+plt.title('Opening Price Comparison: Reliance vs TCS')
+price_relnce['Close'].plot(color='blue', label='Reliance')
+price_tcs['Close'].plot(color='red', label='TCS')
+plt.title('Closing Price Comparison: Reliance vs TCS')
+plt.xlabel('Date')
+plt.ylabel('Closing Price')
+plt.legend()  # Show legend for the lines
+plt.grid(True)
+plt.show()
+price_list['Volume'].plot(figsize=(15,7))
+plt.ylabel('Volume Traded')
+plt.legend()
+plt.figure(figsize=(15,7))
+price_tcs.iloc[1100:1300]['Total Capital Traded'].plot(label='TCS', color='brown')
+price_relnce.iloc[1100:1300]['Total Capital Traded'].plot(label='RELAINCE', color='yellow')
+plt.legend()
+plt.ylabel('Total Capital Traded')
+price_relnce.iloc[[price_relnce['Volume'].argmax()]]
+price_tcs.iloc[[price_tcs['Volume'].argmax()]]
+plt.figure(figsize=(15, 7))
+price_tcs.iloc[400:580]['Open'].plot(label='TCS')
+price_relnce.iloc[400:580]['Open'].plot(label='RELIANCE INDUSTRIES')
+plt.title('Strike price range : RELIANCE vs TCS')
+plt.xlabel('Date')
+plt.legend()  # Show legend for the lines
+plt.grid(True)
+plt.show()
+price_list.head()
+price_tcs = yf.Ticker("TCS.NS")
+price_tcs.info
+price_relnce = yf.Ticker("RELIANCE.NS")
+price_relnce.info
+comparing financial states
+# Financial details for TCS
+financial_details_tcs = {
+   
+    'Dividend Rate (INR)': 36.00,
+    'P/E Ratio (Trailing)': 31.20,
+  
+    'Profit Margin (%)': 18.88,
+    'Gross Margins (%)': 41.36,
+    'Return on Assets (%)': 23.51,
+    'Return on Equity (%)': 44.93,
+    'Debt to Equity Ratio': 7.66,
+}
+
+# Financial details for Reliance Industries
+financial_details_reliance = {
+   
+    'Dividend Rate (INR)': 9.0,
+    'P/E Ratio (Trailing)': 25.50,
+   
+    'Profit Margin (%)': 7.88,
+    'Gross Margins (%)': 34.75,
+    'Return on Assets (%)': 4.05,
+    'Return on Equity (%)': 8.66,
+    'Debt to Equity Ratio': 36.1,
+}
+
+# Extracting keys and values for both companies
+labels = list(financial_details_tcs.keys())
+values_tcs = list(financial_details_tcs.values())
+values_reliance = list(financial_details_reliance.values())
+
+# Generating positions for the bars
+positions_tcs = list(range(len(labels)))
+positions_reliance = [pos + 0.4 for pos in positions_tcs]
+
+# Plotting financial details for TCS
+plt.figure(figsize=(12, 8))
+
+plt.barh(positions_tcs, values_tcs, color='red', label='TCS', height=0.4)
+plt.barh(positions_reliance, values_reliance, color='blue', label='Reliance Industries', height=0.4)
+
+plt.yticks(positions_tcs, labels)
+plt.xlabel('Values')
+plt.title('Financial Details of TCS vs Reliance Industries')
+plt.legend()
+plt.tight_layout()
+plt.show()
+# Financial details for TCS
+financial_details_tcs = {
+    'Market Cap (INR billion)': 13788.90,
+    'Revenue (INR billion)': 2364.64,
+}
+
+# Financial details for Reliance Industries
+financial_details_reliance = {
+    'Market Cap (INR billion)': 17525.92,
+    'Revenue (INR billion)': 8690.16,
+}
+
+# Extracting keys and values for both companies
+labels = list(financial_details_tcs.keys())
+values_tcs = list(financial_details_tcs.values())
+values_reliance = list(financial_details_reliance.values())
+
+# Generating positions for the bars
+positions_tcs = list(range(len(labels)))
+positions_reliance = [pos + 0.4 for pos in positions_tcs]
+
+# Plotting financial details for TCS and Reliance
+plt.figure(figsize=(8, 6))
+
+plt.bar(positions_tcs, values_tcs, color='green', width=0.4, label='TCS')
+plt.bar(positions_reliance, values_reliance, color='gold', width=0.4, label='Reliance Industries')
+
+plt.xticks(positions_tcs, labels)
+plt.ylabel('Values (INR billion)')
+plt.title('Market Capital and Revenue of TCS vs Reliance Industries')
+plt.legend()
+plt.tight_layout()
+plt.show()
+price_tcs.balance_sheet
+price_relnce.balance_sheet
+# Extracting 'Open' prices
+open_prices = price_list['Open']
+
+# Creating a DataFrame with the 'Open' prices of the selected stocks
+open_prices.columns = ['TCS', 'RELIANCE']
+open_prices = open_prices.dropna()
+
+# Scatterplot Matrix
+scatter_matrix(open_prices, figsize=(10, 10), hist_kwds={'bins': 50})
+plt.suptitle('Scatterplot Matrix: Reliance vs TCS', fontsize=16)
+plt.show()
+price_tcs = yf.download('TCS.NS', start='2023-01-01', end='2023-12-31')
+price_relnce = yf.download('RELIANCE.NS', start='2023-01-01', end='2023-12-31')
+price_tcs['Returns'] = (price_tcs['Close'] / price_tcs['Close'].shift(1)) - 1
+price_relnce['Returns'] = (price_relnce['Close'] / price_relnce['Close'].shift(1)) - 1
+# Drop the first row containing NaN due to shift(1)
+price_tcs.dropna(inplace=True)
+price_relnce.dropna(inplace=True)
+price_tcs.head()
+price_relnce.head()
+price_tcs['Returns'].hist(bins=50,label='TCS',alpha=0.5)
+price_relnce['Returns'].hist(bins=50,label='RELAINCE',alpha=0.5)
+plt.legend()
+stock_list = pd.concat([price_tcs['Returns'],price_relnce['Returns']],axis=1)
+stock_list.columns = ['TCS','RELAINCE']
+stock_list.plot(kind='box',figsize=(16,6))
+price_tcs['Cumulative Returns'] = (1+ price_tcs['Returns']).cumprod()
+price_relnce['Cumulative Returns'] = (1+ price_relnce['Returns']).cumprod()
+price_tcs.head()
+price_relnce.head()
+price_tcs['Cumulative Returns'].plot(label='TCS')
+price_relnce['Cumulative Returns'].plot(label='RELAINCE')
+plt.title('Cumulative Returns vs Time')
+plt.legend()
